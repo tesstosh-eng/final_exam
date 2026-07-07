@@ -31,12 +31,12 @@ def positive_assert_order():
     create_response = post_create_order(order_body)
 
     # Проверяется, что код ответа равен 200 или 201
-    assert create_response.status_code in (200, 201), "Не удалось создать заказ"
-
+    assert create_response.status_code in (200, 201), \
+           f"Не удалось создать заказ. Статус: {create_response.status_code}, ответ: {create_response.text}"
+    
     # Сохранение трек-номера
     track_number = create_response.json().get("track")
-    print("Заказ создан, Номер трека:", track_number)
-
+    
     # Проверяется, что трек-номер получен и не является пустым
     assert track_number, "Трек-номер не получен"
 
@@ -44,8 +44,8 @@ def positive_assert_order():
     get_response = get_order_by_track(track_number)
 
     # Проверка статуса ответа
-    assert get_response.status_code == 200, "Заказ не найден"
-    print("Тест успешно пройден. Код 200.")
+    assert get_response.status_code == 200, \
+           f"Заказ не найден. Статус: {get_response.status_code}, ответ: {get_response.text}"
 
 if __name__ == "__main__":
     positive_assert_order()
